@@ -11,7 +11,7 @@ st.set_page_config(page_title="Apple Leaf Disease Detector")
 
 BASE = Path(__file__).parent
 MODEL_PATH = BASE / "plant_model.keras"
-DRIVE_FILE_ID = "https://drive.google.com/file/d/1WTbm-N9IwqpUsIMclZj5bgZtjFK_ZDIz/view?usp=sharing"
+DRIVE_FILE_ID = "1WTbm-N9IwqpUsIMclZj5bgZtjFK_ZDIz"
 LABELS = ["healthy", "multiple_diseases", "rust", "scab"]
 ICONS = {"healthy": "✅", "multiple_diseases": "⚠️", "rust": "🟠", "scab": "🟤"}
 
@@ -20,7 +20,8 @@ ICONS = {"healthy": "✅", "multiple_diseases": "⚠️", "rust": "🟠", "scab"
 def load_model():
     if not MODEL_PATH.exists():
         with st.spinner("Downloading model (first run only, ~98 MB)..."):
-            gdown.download(id=DRIVE_FILE_ID, output=str(MODEL_PATH), quiet=False)
+            url = f"https://drive.google.com/uc?id={1WTbm-N9IwqpUsIMclZj5bgZtjFK_ZDIz}"
+            gdown.download(url=url, output=str(MODEL_PATH), quiet=False, fuzzy=True)
     return tf.keras.models.load_model(MODEL_PATH, custom_objects={"preprocess_input": preprocess_input})
 
 
