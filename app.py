@@ -21,7 +21,7 @@ def load_model():
     if not MODEL_PATH.exists():
         with st.spinner("Downloading model (first run only, ~98 MB)..."):
             url = f"https://drive.google.com/uc?id={DRIVE_FILE_ID}"
-            gdown.download(url=url, output=str(MODEL_PATH), quiet=False, fuzzy=True)
+            gdown.download(url=url, output=str(MODEL_PATH), quiet=False)
     return tf.keras.models.load_model(MODEL_PATH, custom_objects={"preprocess_input": preprocess_input})
 
 
