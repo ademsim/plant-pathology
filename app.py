@@ -1,26 +1,32 @@
 from pathlib import Path
 
+import gdown
 import numpy as np
 import streamlit as st
 import tensorflow as tf
 from PIL import Image
 from tensorflow.keras.applications.resnet50 import preprocess_input
 
-st.set_page_config(page_title="Apple Leaf Disease Detector", page_icon="🍏")
+st.set_page_config(page_title="Apple Leaf Disease Detector")
 
 BASE = Path(__file__).parent
+MODEL_PATH = BASE / "plant_model.keras"
+DRIVE_FILE_ID = "https://drive.google.com/file/d/1WTbm-N9IwqpUsIMclZj5bgZtjFK_ZDIz/view?usp=sharing"
 LABELS = ["healthy", "multiple_diseases", "rust", "scab"]
 ICONS = {"healthy": "✅", "multiple_diseases": "⚠️", "rust": "🟠", "scab": "🟤"}
 
 
 @st.cache_resource
 def load_model():
-    return tf.keras.models.load_model(BASE / "plant_model.keras", custom_objects={"preprocess_input": preprocess_input})
+    if not MODEL_PATH.exists():
+        with st.spinner("Downloading model (first run only, ~98 MB)..."):
+            gdown.download(id=DRIVE_FILE_ID, output=str(MODEL_PATH), quiet=False)
+    return tf.keras.models.load_model(MODEL_PATH, custom_objects={"preprocess_input": preprocess_input})
 
 
 model = load_model()
 
-st.title("🍏 Apple Leaf Disease Detector")
+st.title("Apple Leaf Disease Detector")
 st.write(
     "A ResNet50 transfer-learning model (trained on the Kaggle Plant Pathology 2020 dataset) classifies a photo "
     "of an apple tree leaf as healthy, showing multiple diseases, rust, or scab."
