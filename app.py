@@ -20,7 +20,7 @@ ICONS = {"healthy": "✅", "multiple_diseases": "⚠️", "rust": "🟠", "scab"
 def load_model():
     if not MODEL_PATH.exists():
         with st.spinner("Downloading model (first run only, ~98 MB)..."):
-            url = f"https://drive.google.com/uc?id={1WTbm-N9IwqpUsIMclZj5bgZtjFK_ZDIz}"
+            url = f"https://drive.google.com/uc?id={DRIVE_FILE_ID}"
             gdown.download(url=url, output=str(MODEL_PATH), quiet=False, fuzzy=True)
     return tf.keras.models.load_model(MODEL_PATH, custom_objects={"preprocess_input": preprocess_input})
 
